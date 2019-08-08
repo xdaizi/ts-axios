@@ -2,7 +2,7 @@
  * @Descripttion: 针对url的帮助类方方
  * @Author: xiaodao
  * @Date: 2019-08-07 23:12:33
- * @LastEditTime: 2019-08-07 23:56:47
+ * @LastEditTime: 2019-08-08 23:01:36
  */
 
 import { isDate, isObject } from './util'
@@ -78,6 +78,6 @@ export function buildUrl(url: string, params?: any): string {
     url = url.slice(0, markIndex)
   }
   // 判断url上是否已有?及参数
-  url += url.indexOf('?') !== -1 ? `?${serializedParams}` : `&${serializedParams}`
+  url += url.indexOf('?') !== -1 ? `&${serializedParams}` : `?${serializedParams}`
   return url
 }

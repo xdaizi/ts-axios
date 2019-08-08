@@ -1,4 +1,9 @@
-// 执行webpack及起本地服务
+/*
+ * @Descripttion: 执行webpack及起本地服务
+ * @Author: sueRimn
+ * @Date: 2019-08-06 23:31:38
+ * @LastEditTime: 2019-08-08 22:59:22
+ */
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -38,6 +43,10 @@ router.get('/simple/get', function(req, res) {
   res.json({
     msg: `hello world`
   })
+})
+
+router.get('/base/get', function(req, res) {
+  res.json(req.query)
 })
 
 app.use(router)
