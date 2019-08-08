@@ -2,10 +2,10 @@
  * @Descripttion: 针对url的帮助类方方
  * @Author: xiaodao
  * @Date: 2019-08-07 23:12:33
- * @LastEditTime: 2019-08-08 23:01:36
+ * @LastEditTime: 2019-08-08 23:29:47
  */
 
-import { isDate, isObject } from './util'
+import { isDate, isPlainObject } from './util'
 
 /**
  * @name: encode
@@ -62,7 +62,7 @@ export function buildUrl(url: string, params?: any): string {
       if (isDate(val)) {
         // 判断是否为日期
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         // 判断是否为对象类型
         val = JSON.stringify(val)
       }
@@ -78,6 +78,6 @@ export function buildUrl(url: string, params?: any): string {
     url = url.slice(0, markIndex)
   }
   // 判断url上是否已有?及参数
-  url += url.indexOf('?') !== -1 ? `&${serializedParams}` : `?${serializedParams}`
+  url += url.indexOf('?') !== -1 ? `&` : `?` + serializedParams
   return url
 }

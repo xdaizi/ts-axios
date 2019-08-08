@@ -2,12 +2,13 @@
  * @Descripttion: ts-axios的入口文件
  * @Author: xiaodai
  * @Date: 2019-07-09 23:23:03
- * @LastEditTime: 2019-08-08 22:56:37
+ * @LastEditTime: 2019-08-08 23:35:01
  */
 import { AxiosRequestConfig } from './types/index'
+import { buildUrl } from './helper/url'
+import { trnasformRequest } from './helper/data'
 // 引入xhr
 import xhr from './xhr'
-import { buildUrl } from './helper/url'
 
 function axios(config: AxiosRequestConfig): void {
   // 处理config
@@ -23,6 +24,7 @@ function axios(config: AxiosRequestConfig): void {
  */
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
+  config.data = transformRequestData(config)
 }
 
 /**
@@ -34,6 +36,16 @@ function processConfig(config: AxiosRequestConfig): void {
 function transformUrl(config: AxiosRequestConfig): string {
   const { url, params } = config
   return buildUrl(url, params)
+}
+
+/**
+ * @name: transformRequestData
+ * @desc: 转换请求时body的参数
+ * @param {AxiosRequestConfig}
+ * @return: any
+ */
+function transformRequestData(config: AxiosRequestConfig): any {
+  return trnasformRequest(config.data)
 }
 
 // 导出

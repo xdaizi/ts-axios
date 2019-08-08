@@ -2,7 +2,7 @@
  * @Descripttion: 执行webpack及起本地服务
  * @Author: sueRimn
  * @Date: 2019-08-06 23:31:38
- * @LastEditTime: 2019-08-08 22:59:22
+ * @LastEditTime: 2019-08-08 23:35:53
  */
 
 const express = require('express')
@@ -48,6 +48,24 @@ router.get('/simple/get', function(req, res) {
 router.get('/base/get', function(req, res) {
   res.json(req.query)
 })
+
+router.post('/base/post', function(req, res) {
+  res.json(req.body)
+})
+
+router.post('/base/buffer', function(req, res) {
+  let msg = []
+  req.on('data', (chunk) => {
+    if (chunk) {
+      msg.push(chunk)
+    }
+  })
+  req.on('end', () => {
+    let buf = Buffer.concat(msg)
+    res.json(buf.toJSON())
+  })
+})
+
 
 app.use(router)
 
