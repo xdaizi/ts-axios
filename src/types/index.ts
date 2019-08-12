@@ -1,3 +1,9 @@
+/*
+ * @Descripttion: 接口定义
+ * @Author: sueRimn
+ * @Date: 2019-07-09 23:24:53
+ * @LastEditTime: 2019-08-12 23:34:43
+ */
 // 存放要使用到的接口
 
 // axios请求method的接口 -- 字符串字面量的形式
@@ -30,4 +36,7 @@ export interface AxiosRequestConfig {
 
   // post时请求的参数
   data?: any
+
+  // 请求头
+  headers?: any
 }

@@ -2,11 +2,13 @@
  * @Descripttion: ts-axios的入口文件
  * @Author: xiaodai
  * @Date: 2019-07-09 23:23:03
- * @LastEditTime: 2019-08-08 23:35:01
+ * @LastEditTime: 2019-08-12 23:38:55
  */
 import { AxiosRequestConfig } from './types/index'
 import { buildUrl } from './helper/url'
 import { trnasformRequest } from './helper/data'
+import { processHeaders } from './helper/headers'
+
 // 引入xhr
 import xhr from './xhr'
 
@@ -24,6 +26,8 @@ function axios(config: AxiosRequestConfig): void {
  */
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
+  // 由于处理请求头部要判断data,所以请求头的处理要在data处理之前
+  config.headers = transformHeaders(config)
   config.data = transformRequestData(config)
 }
 
@@ -46,6 +50,17 @@ function transformUrl(config: AxiosRequestConfig): string {
  */
 function transformRequestData(config: AxiosRequestConfig): any {
   return trnasformRequest(config.data)
+}
+
+/**
+ * @name: transformHeaders
+ * @desc: 转换请求头
+ * @param {config: AxiosRequestConfig}
+ * @return: 请求头 any
+ */
+function transformHeaders(config: AxiosRequestConfig): any {
+  const { headers = {}, data } = config
+  return processHeaders(headers, data)
 }
 
 // 导出
