@@ -2,9 +2,9 @@
  * @Descripttion: ts-axios的入口文件
  * @Author: xiaodai
  * @Date: 2019-07-09 23:23:03
- * @LastEditTime: 2019-08-12 23:38:55
+ * @LastEditTime: 2019-08-13 23:58:42
  */
-import { AxiosRequestConfig } from './types/index'
+import { AxiosRequestConfig, AxiosPromise } from './types/index'
 import { buildUrl } from './helper/url'
 import { trnasformRequest } from './helper/data'
 import { processHeaders } from './helper/headers'
@@ -12,10 +12,10 @@ import { processHeaders } from './helper/headers'
 // 引入xhr
 import xhr from './xhr'
 
-function axios(config: AxiosRequestConfig): void {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   // 处理config
   processConfig(config)
-  xhr(config)
+  return xhr(config)
 }
 
 /**

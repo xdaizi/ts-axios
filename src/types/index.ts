@@ -2,7 +2,7 @@
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-08-12 23:34:43
+ * @LastEditTime: 2019-08-13 23:40:49
  */
 // 存放要使用到的接口
 
@@ -39,4 +39,34 @@ export interface AxiosRequestConfig {
 
   // 请求头
   headers?: any
+
+  // 响应的数据类型
+  responseType?: XMLHttpRequestResponseType
+}
+
+
+// axios 响应对象
+export interface AxiosResponse {
+  // 响应头
+  headers: any
+
+  // 响应数据
+  data: any
+
+  // api配置
+  config: AxiosRequestConfig
+
+  // 响应状态
+  status: number
+  
+  // 响应状态信息
+  statusText: string
+
+  // 情趣响应对象
+  request: any
+}
+
+
+// 响应对象是一个promise,所以继承Promise
+export interface AxiosPromise extends Promise<AxiosResponse> {
 }

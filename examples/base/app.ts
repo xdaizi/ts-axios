@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: sueRimn
  * @Date: 2019-08-08 22:57:01
- * @LastEditTime: 2019-08-13 23:17:27
+ * @LastEditTime: 2019-08-13 23:58:34
  */
 import axios from '../../src/index'
 
@@ -68,6 +68,55 @@ import axios from '../../src/index'
 // })
 
 
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
+
+// const arr = new Int32Array([21, 31])
+
+// axios({
+//   method: 'post',
+//   url: '/base/buffer',
+//   data: arr
+// })
+
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
+
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   headers: {
+//     'content-type': 'application/json',
+//     'Accept': 'application/json, text/plain, */*'
+//   },
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
+
+// const paramsString = 'q=URLUtils.searchParams&topic=api'
+// const searchParams = new URLSearchParams(paramsString)
+
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: searchParams
+// })
+
+
 axios({
   method: 'post',
   url: '/base/post',
@@ -75,43 +124,18 @@ axios({
     a: 1,
     b: 2
   }
-})
-
-const arr = new Int32Array([21, 31])
-
-axios({
-  method: 'post',
-  url: '/base/buffer',
-  data: arr
+}).then((res) => {
+  console.log(res)
 })
 
 axios({
   method: 'post',
   url: '/base/post',
+  responseType: 'json',
   data: {
-    a: 1,
-    b: 2
+    a: 3,
+    b: 4
   }
-})
-
-axios({
-  method: 'post',
-  url: '/base/post',
-  headers: {
-    'content-type': 'application/json',
-    'Accept': 'application/json, text/plain, */*'
-  },
-  data: {
-    a: 1,
-    b: 2
-  }
-})
-
-const paramsString = 'q=URLUtils.searchParams&topic=api'
-const searchParams = new URLSearchParams(paramsString)
-
-axios({
-  method: 'post',
-  url: '/base/post',
-  data: searchParams
+}).then((res) => {
+  console.log(res)
 })
