@@ -2,7 +2,7 @@
  * @Descripttion: 处理请求头
  * @Author: sueRimn
  * @Date: 2019-08-12 23:21:44
- * @LastEditTime: 2019-08-12 23:33:39
+ * @LastEditTime: 2019-08-13 23:14:14
  */
 import { isPlainObject } from './util'
 
@@ -29,6 +29,7 @@ function normalizeHeaderName(headers: any, normalizedName: string): void {
  * @return: 请求头
  */
 export function processHeaders(headers: any, data: any): any {
+  // debugger
   normalizeHeaderName(headers, 'Content-Type')
   if (isPlainObject(data)) {
     if (headers && !headers['Content-Type']) {
