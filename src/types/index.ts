@@ -2,7 +2,7 @@
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-08-13 23:40:49
+ * @LastEditTime: 2019-08-14 23:28:47
  */
 // 存放要使用到的接口
 
@@ -42,6 +42,9 @@ export interface AxiosRequestConfig {
 
   // 响应的数据类型
   responseType?: XMLHttpRequestResponseType
+
+  // 请求超时
+  timeout?: number
 }
 
 

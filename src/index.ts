@@ -2,11 +2,11 @@
  * @Descripttion: ts-axios的入口文件
  * @Author: xiaodai
  * @Date: 2019-07-09 23:23:03
- * @LastEditTime: 2019-08-13 23:58:42
+ * @LastEditTime: 2019-08-14 23:19:06
  */
-import { AxiosRequestConfig, AxiosPromise } from './types/index'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index'
 import { buildUrl } from './helper/url'
-import { trnasformRequest } from './helper/data'
+import { trnasformRequest, transformResponse } from './helper/data'
 import { processHeaders } from './helper/headers'
 
 // 引入xhr
@@ -15,7 +15,9 @@ import xhr from './xhr'
 function axios(config: AxiosRequestConfig): AxiosPromise {
   // 处理config
   processConfig(config)
-  return xhr(config)
+  return xhr(config).then(res => {
+    return transformResponseData(res)
+  })
 }
 
 /**
@@ -61,6 +63,11 @@ function transformRequestData(config: AxiosRequestConfig): any {
 function transformHeaders(config: AxiosRequestConfig): any {
   const { headers = {}, data } = config
   return processHeaders(headers, data)
+}
+
+function transformResponseData(res: AxiosResponse): AxiosResponse{
+  res.data =  transformResponse(res.data)
+  return res
 }
 
 // 导出

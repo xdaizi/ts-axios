@@ -2,7 +2,7 @@
  * @Descripttion: 执行webpack及起本地服务
  * @Author: sueRimn
  * @Date: 2019-08-06 23:31:38
- * @LastEditTime: 2019-08-08 23:35:53
+ * @LastEditTime: 2019-08-14 23:42:53
  */
 
 const express = require('express')
@@ -66,11 +66,29 @@ router.post('/base/buffer', function(req, res) {
   })
 })
 
+router.get('/error/get', function(req, res) {
+  if (Math.random() > 0.5) {
+    res.json({
+      msg: `hello world`
+    })
+  } else {
+    res.status(500)
+    res.end()
+  }
+})
+
+router.get('/error/timeout', function(req, res) {
+  setTimeout(() => {
+    res.json({
+      msg: `hello world`
+    })
+  }, 3000)
+})
 
 app.use(router)
 
 //7.起服务监听端口
-const port = process.env.PORT || 8080
+const port = 3333 || process.env.PORT || 8080
 const server = app.listen(port,()=>{
     console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`)
 })
