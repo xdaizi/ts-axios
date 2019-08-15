@@ -2,17 +2,17 @@
  * @Descripttion: 
  * @Author: sueRimn
  * @Date: 2019-08-08 22:57:01
- * @LastEditTime: 2019-08-14 23:42:32
+ * @LastEditTime: 2019-08-15 23:40:50
  */
-import axios from '../../src/index'
+import axios, { AxiosError } from '../../src/index'
 
 axios({
   method: 'get',
   url: '/error/get1'
 }).then((res) => {
   console.log(res)
-}).catch((e) => {
-  console.log(e)
+}).catch((e: AxiosError) => {
+  console.log(1111, e.message)
 })
 
 axios({

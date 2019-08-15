@@ -2,11 +2,12 @@
  * @Descripttion: xhr功能模块
  * @Author: sueRimn
  * @Date: 2019-07-09 23:39:12
- * @LastEditTime: 2019-08-14 23:38:39
+ * @LastEditTime: 2019-08-15 23:27:55
  */
 // 实现xhr请求方法的模块
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index'
 import { parseHeaders } from './helper/headers'
+import { createError } from './helper/error'
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 返回promise对象
   return new Promise((resolve, reject) =>{
@@ -58,12 +59,22 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     // 监听请求异常
     request.onerror = function handeError() {
-      reject(new Error('Network Error'))
+      reject(createError(
+        'Network Error',
+        config,
+        null,
+        request
+      ))
     }
   
     // 监听请求超时
     request.ontimeout = function handeTimeout() {
-      reject(new Error(`Timeout of ${timeout} ms exceeded`))
+      reject(createError(
+        `Timeout of ${config.timeout} ms exceeded`,
+        config,
+        'ECONNABORTED',
+        request
+      ))
     }
 
     // 处理请求头
@@ -91,7 +102,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if(response.status >= 200 && response.status< 300) {
         resolve(response)
       } else {
-        reject(new Error(`Request failed with status code ${response.status}`))
+        reject(createError(
+          `Request failed with status code ${response.status}`,
+          config,
+          null,
+          request,
+          response
+        ))
       }
     }
   })

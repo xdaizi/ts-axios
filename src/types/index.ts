@@ -2,7 +2,7 @@
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-08-14 23:28:47
+ * @LastEditTime: 2019-08-15 23:22:31
  */
 // 存放要使用到的接口
 
@@ -73,3 +73,25 @@ export interface AxiosResponse {
 // 响应对象是一个promise,所以继承Promise
 export interface AxiosPromise extends Promise<AxiosResponse> {
 }
+
+// 错误信息接口
+export interface AxiosError extends Error {
+  // 配置
+  config: AxiosRequestConfig 
+
+  // code码
+  code?: string
+
+  // 请求
+  request: any
+
+  // 响应
+  response: AxiosResponse
+
+  // 是否为axios错误
+  isAxiosError: boolean
+
+}
+
+
+
