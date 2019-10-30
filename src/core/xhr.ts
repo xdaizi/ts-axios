@@ -1,13 +1,8 @@
-/*
- * @Descripttion: xhr功能模块
- * @Author: sueRimn
- * @Date: 2019-07-09 23:39:12
- * @LastEditTime: 2019-08-15 23:27:55
- */
+
 // 实现xhr请求方法的模块
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index'
-import { parseHeaders } from './helper/headers'
-import { createError } from './helper/error'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index'
+import { parseHeaders } from '../helper/headers'
+import { createError } from '../helper/error'
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 返回promise对象
   return new Promise((resolve, reject) =>{
@@ -27,7 +22,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
   
     // 初始化请求 请求方法，请求url，是否异步
-    request.open(method.toUpperCase(), url, true)
+    // 使用! 断定url必定存在
+    request.open(method.toUpperCase(), url!, true)
   
     // 监听响应变化
     request.onreadystatechange = function handeLoad() {

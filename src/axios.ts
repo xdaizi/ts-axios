@@ -1,74 +1,15 @@
-/*
- * @Descripttion: ts-axios的入口文件
- * @Author: xiaodai
- * @Date: 2019-07-09 23:23:03
- * @LastEditTime: 2019-08-15 23:33:25
- */
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index'
-import { buildUrl } from './helper/url'
-import { trnasformRequest, transformResponse } from './helper/data'
-import { processHeaders } from './helper/headers'
-
-// 引入xhr
-import xhr from './xhr'
-
-function axios(config: AxiosRequestConfig): AxiosPromise {
-  // 处理config
-  processConfig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+// 引入Axios类生成混合对象
+import {AxiosInstance} from './types/index'
+import { extend } from './helper/util'
+import Axios from './core/axios'
+function createInstance(): AxiosInstance {
+    const context = new Axios()
+    const instance = Axios.prototype.request.bind(context)
+    extend(instance, context)
+    // 通过extend 保证instance 可以通过 instance.post的形式调用, 且instance本身作为函数可以被调用
+    return instance as AxiosInstance
 }
 
-/**
- * @name: processConfig
- * @desc: 处理请求的参数配置
- * @param {config: AxiosRequestConfig}
- * @return: 无
- */
-function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformUrl(config)
-  // 由于处理请求头部要判断data,所以请求头的处理要在data处理之前
-  config.headers = transformHeaders(config)
-  config.data = transformRequestData(config)
-}
+const axios = createInstance()
 
-/**
- * @name: transformUrl
- * @desc: 转换url的参数, 将get请求参数亲姐到url上
- * @param {config: AxiosRequestConfig}
- * @return: url: string api?key=value
- */
-function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildUrl(url, params)
-}
-
-/**
- * @name: transformRequestData
- * @desc: 转换请求时body的参数
- * @param {AxiosRequestConfig}
- * @return: any
- */
-function transformRequestData(config: AxiosRequestConfig): any {
-  return trnasformRequest(config.data)
-}
-
-/**
- * @name: transformHeaders
- * @desc: 转换请求头
- * @param {config: AxiosRequestConfig}
- * @return: 请求头 any
- */
-function transformHeaders(config: AxiosRequestConfig): any {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
-function transformResponseData(res: AxiosResponse): AxiosResponse{
-  res.data =  transformResponse(res.data)
-  return res
-}
-
-// 导出
 export default axios

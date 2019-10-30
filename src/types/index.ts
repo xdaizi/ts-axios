@@ -1,8 +1,10 @@
+import { Interface } from "readline"
+
 /*
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-08-15 23:22:31
+ * @LastEditTime: 2019-10-30 21:55:52
  */
 // 存放要使用到的接口
 
@@ -26,7 +28,8 @@ export type Method =
 // axios 请求参数的接口
 export interface AxiosRequestConfig {
   // 请求的地址,参数可拼接在url上所以其他为可选
-  url: string
+  // 由于url 可以单独传,所以url也不是必选
+  url?: string
 
   // 请求的方法
   method?: Method
@@ -94,4 +97,35 @@ export interface AxiosError extends Error {
 }
 
 
+// 定义Axios接口
+export interface AxiosType {
+  // request 函数方法
+  request(config: AxiosRequestConfig): AxiosPromise
 
+  // get 方法
+  get(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  // delete方法
+  delete(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  // head方法
+  head(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  // options方法
+  options(url: string, config?: AxiosRequestConfig): AxiosPromise
+
+  // post方法
+  post(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise
+
+  // put方法
+  put(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise
+
+  // patch方法
+  patch(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise
+}
+
+// 定义Axios实例类 除了axios.post 行直接axios()调用 --- 混合对象 不但自身是函数,其方法也是函数
+// 所以接口继承于Axios接口
+export interface AxiosInstance extends AxiosType{
+  (config: AxiosRequestConfig): AxiosPromise
+}

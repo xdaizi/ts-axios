@@ -1,9 +1,3 @@
-/*
- * @Descripttion: 
- * @Author: sueRimn
- * @Date: 2019-08-08 22:57:01
- * @LastEditTime: 2019-08-15 23:40:50
- */
 import axios, { AxiosError } from '../../src/index'
 
 axios({
