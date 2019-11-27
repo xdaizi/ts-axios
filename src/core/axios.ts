@@ -4,7 +4,14 @@ import dispatchRequest from './dispatchRequest'
 // 创建axios类
 export default class Axios {
     // request方法
-    request(config: AxiosRequestConfig) :AxiosPromise {
+    request(url:any, config?: any) :AxiosPromise {
+        // 重载判断
+        if(typeof url === 'string') {
+            !config  && (config = {})
+            config.url = url
+        } else {
+            config = url
+        }
         return dispatchRequest(config)
     }
     // get

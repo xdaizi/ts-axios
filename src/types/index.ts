@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-10-30 21:55:52
+ * @LastEditTime: 2019-11-27 20:11:55
  */
 // 存放要使用到的接口
 
@@ -126,6 +126,8 @@ export interface AxiosType {
 
 // 定义Axios实例类 除了axios.post 行直接axios()调用 --- 混合对象 不但自身是函数,其方法也是函数
 // 所以接口继承于Axios接口
+// 函数重载 --- axios('get/url',{}) axios({url: 'get/url'})
 export interface AxiosInstance extends AxiosType{
   (config: AxiosRequestConfig): AxiosPromise
+  (url:String, config?: AxiosRequestConfig): AxiosPromise
 }
