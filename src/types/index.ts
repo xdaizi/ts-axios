@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-11-27 20:41:04
+ * @LastEditTime: 2019-11-27 22:17:31
  */
 // 存放要使用到的接口
 
@@ -74,7 +74,7 @@ export interface AxiosResponse<T = any> {
 
 
 // 响应对象是一个promise,所以继承Promise
-export interface AxiosPromise<T> extends Promise<AxiosResponse<T>> {
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {
 }
 
 // 错误信息接口
