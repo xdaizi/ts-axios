@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-11-27 20:11:55
+ * @LastEditTime: 2019-11-27 20:41:04
  */
 // 存放要使用到的接口
 
@@ -52,12 +52,12 @@ export interface AxiosRequestConfig {
 
 
 // axios 响应对象
-export interface AxiosResponse {
+export interface AxiosResponse<T = any> {
   // 响应头
   headers: any
 
   // 响应数据
-  data: any
+  data: T
 
   // api配置
   config: AxiosRequestConfig
@@ -74,7 +74,7 @@ export interface AxiosResponse {
 
 
 // 响应对象是一个promise,所以继承Promise
-export interface AxiosPromise extends Promise<AxiosResponse> {
+export interface AxiosPromise<T> extends Promise<AxiosResponse<T>> {
 }
 
 // 错误信息接口
@@ -100,34 +100,34 @@ export interface AxiosError extends Error {
 // 定义Axios接口
 export interface AxiosType {
   // request 函数方法
-  request(config: AxiosRequestConfig): AxiosPromise
+  request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
 
   // get 方法
-  get(url: string, config?: AxiosRequestConfig): AxiosPromise
+  get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 
   // delete方法
-  delete(url: string, config?: AxiosRequestConfig): AxiosPromise
+  delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 
   // head方法
-  head(url: string, config?: AxiosRequestConfig): AxiosPromise
+  head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 
   // options方法
-  options(url: string, config?: AxiosRequestConfig): AxiosPromise
+  options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 
   // post方法
-  post(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise
+  post<T = any>(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise<T>
 
   // put方法
-  put(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise
+  put<T = any>(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise<T>
 
   // patch方法
-  patch(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise
+  patch<T = any>(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
 // 定义Axios实例类 除了axios.post 行直接axios()调用 --- 混合对象 不但自身是函数,其方法也是函数
 // 所以接口继承于Axios接口
 // 函数重载 --- axios('get/url',{}) axios({url: 'get/url'})
 export interface AxiosInstance extends AxiosType{
-  (config: AxiosRequestConfig): AxiosPromise
-  (url:String, config?: AxiosRequestConfig): AxiosPromise
+  <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
+  <T = any>(url:String, config?: AxiosRequestConfig): AxiosPromise<T>
 }
