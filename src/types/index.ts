@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-11-27 22:17:31
+ * @LastEditTime: 2019-11-30 19:51:33
  */
 // 存放要使用到的接口
 
@@ -99,6 +99,11 @@ export interface AxiosError extends Error {
 
 // 定义Axios接口
 export interface AxiosType {
+    interceptors: {
+      request: AxiosInterceptorManager<AxiosRequestConfig>,
+      response: AxiosInterceptorManager<AxiosResponse>
+  }
+
   // request 函数方法
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
 
@@ -130,4 +135,25 @@ export interface AxiosType {
 export interface AxiosInstance extends AxiosType{
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   <T = any>(url:String, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+
+// 定义拦截器的管理对象的忌口,提供外部使用,只有 use ,eject
+export interface AxiosInterceptorManager<T> {
+  // use 方法 两个参数苏,第一个必选,第二个可选, 返回 ID ,方便取消
+  use(resolve: ResolvedFn<T>, RejectedFn? :RejectedFn) :number
+  // eject: 取消,传入id即可
+  eject(id: number): void
+}
+
+// 定义成功的回调
+// 可能是同步,也可能是promise
+export interface ResolvedFn<T = any> {
+  (val: T) :T | Promise<T>
+}
+
+// 失败的回到
+// 传入any,返回any
+export interface RejectedFn  {
+  (error: any): any
 }

@@ -40,7 +40,7 @@ registerBaseRouter()
 registerErrorRouter()
 
 registerExtendRouter()
-
+registerInterceptorRouter()
 function registerSimpleRouter() {
   // 路由
   router.get('/simple/get', function(req, res) {
@@ -133,6 +133,11 @@ function registerExtendRouter() {
         age: 18
       }
     })
+  })
+}
+function registerInterceptorRouter () {
+  router.get('/interceptor/get', function(req, res) {
+    res.end('hello')
   })
 }
 app.use(router)
