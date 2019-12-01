@@ -8,6 +8,8 @@ import transform from './transform'
 import xhr from './xhr'
 
 function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  // 判断token 已经被使用过了，直接抛错。
+  throwIfCancellationRequested(config)
   // 处理config
   processConfig(config)
   return xhr(config).then(res => {
@@ -46,5 +48,11 @@ function transformResponseData(res: AxiosResponse): AxiosResponse{
   return res
 }
 
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
+}
 // 导出
 export default dispatchRequest

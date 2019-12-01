@@ -7,7 +7,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 返回promise对象
   return new Promise((resolve, reject) =>{
     // 利用解构赋值拿到参数,并且赋给默认值
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout,cancelToken } = config
     
     // 创建xhr对象
     const request = new XMLHttpRequest()
@@ -82,6 +82,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.setRequestHeader(name, headers[name])
       }
     })
+
+    // 如果cancelToken有
+    if(cancelToken) {
+      cancelToken.promise.then(reason => {
+        // 取消请求
+        request.abort()
+        // 将信息暴露出去
+        reject(reason)
+      })
+    }
+
     // 发送请求
     request.send(data)
 

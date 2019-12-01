@@ -30,14 +30,14 @@ function deepMergeStrat(val1:any, val2:any):any {
 }
 
 
-//定义只取传入配置的字段数组
+// 定义只取传入配置的字段数组
 const stratKeysFromVal2 = ['url', 'data', 'params']
 
 stratKeysFromVal2.forEach(strat => {
     strats[strat] = fromVal2Strat
 })
 
-//定义复杂合并字段数组
+// 定义复杂合并字段数组
 const stratKeysDeepMerge = ['headers']
 
 stratKeysDeepMerge.forEach(strat => {

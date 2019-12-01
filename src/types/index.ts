@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-12-01 13:53:24
+ * @LastEditTime: 2019-12-02 00:16:39
  */
 // 存放要使用到的接口
 
@@ -54,7 +54,10 @@ export interface AxiosRequestConfig {
   // 响应转化函数
   transformResponse?: AxiosTransformer | AxiosTransformer[]
 
-  //索引签名 属性名(字符串) 属性值any
+  // canceltoken
+  cancelToken?: CancelToken
+
+  // 索引签名 属性名(字符串) 属性值any
   [propName:string]: any
 }
 
@@ -150,6 +153,10 @@ export interface AxiosInstance extends AxiosType{
 // 定义axiosStatic接口, 从而创造实例
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig):  AxiosInstance
+  CancelToken: CancelTokenStatic
+  Cancel: CancelStatic
+  // 判断是否是cancel类
+  isCancel: (value: any) => boolean
 }
 
 // 定义拦截器的管理对象的忌口,提供外部使用,只有 use ,eject
@@ -175,4 +182,47 @@ export interface RejectedFn  {
 // 定义 transform接口
 export interface AxiosTransformer {
   (data: any, headers?: any): any
+}
+
+
+// 定义cancelToken接口
+export interface CancelToken {
+  // 一个promise
+  promise: Promise<Cancel>
+  // 取消的信息
+  message?: Cancel
+  // cancelToken被使用过,则抛出
+  throwIfRequested(): void
+}
+
+// 定义Canceler接口,外部调用取消
+export interface Canceler {
+  (message?: string): void
+}
+
+// CancelExecutor接口,实例化CancelToken时调用
+export interface CancelExecutor {
+  (fn:Canceler): void
+}
+
+// 定义CancelTokenSource,方便const source = CancelToken.source(); 访问
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+// 定义CancelTokenStatic控台方法
+export interface CancelTokenStatic {
+  new(executor: CancelExecutor):CancelToken
+  source():CancelTokenSource
+}
+
+// 定义cancel实例接口
+export interface Cancel {
+  message?: string
+}
+
+// 定义cancel的接口类型
+export interface CancelStatic {
+  new(message?: string): Cancel
 }
