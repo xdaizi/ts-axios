@@ -8,7 +8,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) =>{
     // 利用解构赋值拿到参数,并且赋给默认值
     const { data = null, url, method = 'get', headers, responseType, timeout } = config
-  
+    
     // 创建xhr对象
     const request = new XMLHttpRequest()
   
@@ -72,7 +72,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request
       ))
     }
-
     // 处理请求头
     Object.keys(headers).forEach(name => {
       // 如果data不存在,不需要设置请求头
@@ -83,7 +82,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.setRequestHeader(name, headers[name])
       }
     })
-  
     // 发送请求
     request.send(data)
 

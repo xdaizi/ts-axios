@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-12-01 12:16:19
+ * @LastEditTime: 2019-12-01 13:16:31
  */
 // 存放要使用到的接口
 
@@ -48,6 +48,11 @@ export interface AxiosRequestConfig {
 
   // 请求超时
   timeout?: number
+
+  // 请求转化函数
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  // 响应转化函数
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
 
   //索引签名 属性名(字符串) 属性值any
   [propName:string]: any
@@ -161,4 +166,9 @@ export interface ResolvedFn<T = any> {
 // 传入any,返回any
 export interface RejectedFn  {
   (error: any): any
+}
+
+// 定义 transform接口
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }

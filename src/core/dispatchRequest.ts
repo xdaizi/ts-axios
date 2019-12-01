@@ -1,8 +1,8 @@
 
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index'
 import { buildUrl } from '../helper/url'
-import { trnasformRequest, transformResponse } from '../helper/data'
-import { processHeaders,flattenHeaders } from '../helper/headers'
+import { flattenHeaders } from '../helper/headers'
+import transform from './transform'
 
 // 引入xhr
 import xhr from './xhr'
@@ -24,9 +24,7 @@ function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
   // 由于处理请求头部要判断data,所以请求头的处理要在data处理之前
-  config.headers = transformHeaders(config)
-  config.data = transformRequestData(config)
-
+  config.data = transform(config.data, config.headers, config.transformRequest)
   // 将headers下的提取出来
   config.headers = flattenHeaders(config.headers, config.method!)
 }
@@ -43,29 +41,8 @@ function transformUrl(config: AxiosRequestConfig): string {
   return buildUrl(url!, params)
 }
 
-/**
- * @name: transformRequestData
- * @desc: 转换请求时body的参数
- * @param {AxiosRequestConfig}
- * @return: any
- */
-function transformRequestData(config: AxiosRequestConfig): any {
-  return trnasformRequest(config.data)
-}
-
-/**
- * @name: transformHeaders
- * @desc: 转换请求头
- * @param {config: AxiosRequestConfig}
- * @return: 请求头 any
- */
-function transformHeaders(config: AxiosRequestConfig): any {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
 function transformResponseData(res: AxiosResponse): AxiosResponse{
-  res.data =  transformResponse(res.data)
+  res.data = transform(res.data, res.headers, res.config.transformResponse)
   return res
 }
 

@@ -1,4 +1,6 @@
 import { AxiosRequestConfig } from './types'
+import {processHeaders} from './helper/headers'
+import {trnasformRequest,transformResponse} from './helper/data'
 // 定义默认配置
 const defaults: AxiosRequestConfig = {
     method: 'get', // 请求方法
@@ -7,7 +9,19 @@ const defaults: AxiosRequestConfig = {
         common: {
           Accept: 'application/json, text/plain, */*' // 接受的响应
         }
-    }
+    },
+    transformRequest: [
+      // 最初添加一个处理函数
+      function(data: any, headers: any): any {
+        headers = processHeaders(headers, data)
+        return trnasformRequest(data)
+      }
+    ],
+    transformResponse: [
+      function(data:any):any {
+        return transformResponse(data)
+      }
+    ]
 }
 // 不需要请求体
 const methodsNoData = ['delete', 'get', 'head', 'options']
