@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-12-01 13:16:31
+ * @LastEditTime: 2019-12-01 13:53:24
  */
 // 存放要使用到的接口
 
@@ -147,6 +147,10 @@ export interface AxiosInstance extends AxiosType{
   <T = any>(url:String, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+// 定义axiosStatic接口, 从而创造实例
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig):  AxiosInstance
+}
 
 // 定义拦截器的管理对象的忌口,提供外部使用,只有 use ,eject
 export interface AxiosInterceptorManager<T> {
