@@ -19,7 +19,11 @@ interface PromiseChain {
 export default class Axios {
     // 定义interceptors 属性
     interceptors: Interceptors
-    constructor() {
+    // 定义defaults默认对象
+    defaults: AxiosRequestConfig
+    constructor(initConfig: AxiosRequestConfig) {
+        // 初始化默认配置
+        this.defaults = initConfig
         // 出事化两个拦截器 --- 实例可以调用use ,eject,等方法
         this.interceptors = {
             request: new InterceptorManager<AxiosRequestConfig>(),
