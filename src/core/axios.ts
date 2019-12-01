@@ -1,6 +1,7 @@
 import { AxiosRequestConfig, AxiosPromise, Method,AxiosResponse,ResolvedFn,RejectedFn} from '../types'
 import dispatchRequest from './dispatchRequest'
 import InterceptorManager from './Interceptor'
+import mergeConfig from './mergeConfig'
 // Interceptor两个属性
 // 1.request: use方法传入 AxiosRequestConfig
 // 2.response: use方法传入  AxiosResponse
@@ -39,6 +40,9 @@ export default class Axios {
         } else {
             config = url
         }
+
+        // 合并配置
+        mergeConfig(this.defaults, config)
         // 在调用的时候将请求及响应拦截处理
         // 一开始退一个进去
         const chain: PromiseChain[] =  [{
