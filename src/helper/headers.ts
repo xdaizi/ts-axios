@@ -2,9 +2,10 @@
  * @Descripttion: 处理请求头
  * @Author: sueRimn
  * @Date: 2019-08-12 23:21:44
- * @LastEditTime: 2019-08-14 23:08:02
+ * @LastEditTime: 2019-12-01 12:30:27
  */
-import { isPlainObject } from './util'
+import { isPlainObject,deepMerge } from './util'
+import { Method } from '../types'
 
 /**
  * @name: normalizeHeaderName
@@ -68,4 +69,27 @@ export function parseHeaders(headers: string): any {
   })
   return parsed
 
+}
+
+
+/**
+ * @name: flattenHeaders
+ * @desc: 将headers.common及将headers[method]的属性提取到外层
+ * @param {type} 
+ * @return: 将headers
+ */
+export function flattenHeaders(headers: any, method: Method): any {
+  if(!headers) {
+    return headers
+  }
+  // 深度合并
+  headers = deepMerge(headers.common || {}, headers[method] || {}, headers)
+  // 删除不需要的方法
+  const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+
+  methodsToDelete.forEach(method => {
+    delete headers[method]
+  })
+
+  return headers
 }

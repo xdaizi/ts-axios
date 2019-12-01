@@ -19,11 +19,11 @@ function fromVal2Strat(val1:any, val2:any):any {
 // 实现深度合并 --- 复杂对象合并
 function deepMergeStrat(val1:any, val2:any):any {
     if(isPlainObject(val2)) {
-        deepMerge(val1,val2)
+        return deepMerge(val1,val2)
     } else if(typeof val2 !== 'undefined'){
         return val2
     } else if(isPlainObject(val1)) {
-        deepMerge(val1)
+        return deepMerge(val1)
     } else if(typeof val1 !== 'undefined') {
         return val1
     }

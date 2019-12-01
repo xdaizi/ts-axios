@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-12-01 11:25:30
+ * @LastEditTime: 2019-12-01 12:16:19
  */
 // 存放要使用到的接口
 
@@ -103,7 +103,7 @@ export interface AxiosError extends Error {
 // 定义Axios接口
 export interface AxiosType {
     // 实例的属性在接口中也定义,方便取
-    default: AxiosRequestConfig
+    defaults: AxiosRequestConfig
     interceptors: {
       request: AxiosInterceptorManager<AxiosRequestConfig>,
       response: AxiosInterceptorManager<AxiosResponse>

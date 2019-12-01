@@ -42,7 +42,7 @@ export default class Axios {
         }
 
         // 合并配置
-        mergeConfig(this.defaults, config)
+        config = mergeConfig(this.defaults, config)
         // 在调用的时候将请求及响应拦截处理
         // 一开始退一个进去
         const chain: PromiseChain[] =  [{
