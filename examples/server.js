@@ -22,6 +22,13 @@ app.use(webpackDevMiddleware(compiler, {
     },
 }))
 
+// 给一个token
+app.use(express.static(__dirname, {
+  setHeaders (res) {
+    res.cookie('XSRF-TOKEN-D', '1234abc')
+  }
+}))
+
 // 4.webpack-hot-middleware
 app.use(webpackHotMiddleware(compiler))
 
