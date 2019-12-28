@@ -23,6 +23,10 @@ const defaults: AxiosRequestConfig = {
       }
     ],
     
+    // 自定义合法状态码
+    validateStatus(status: number): boolean {
+      return status >= 200 && status < 300
+    },
     xsrfCookieName: 'XSRF-TOKEN',
     xsrfHeaderName: 'X-XSRF-TOKEN',
 }
