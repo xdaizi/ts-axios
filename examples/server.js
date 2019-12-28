@@ -5,7 +5,8 @@ const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
 const router = express.Router()
-
+const cookieParser = require('cookie-parser')
+require('./server2.js')
 // 1.拿到express的实例
 const app = new express()
 
@@ -31,6 +32,8 @@ app.use(express.static(__dirname))
 app.use(bodyParser.json()) // 解析JSON格式
 app.use(bodyParser.urlencoded({ extended: true })) // 解析文本格式
 
+// 解析cookie
+app.use(cookieParser())
 
 // 注册请求路由
 registerSimpleRouter()
@@ -43,6 +46,7 @@ registerExtendRouter()
 registerInterceptorRouter()
 registerConfigRouter()
 registerCancelRouter()
+registerMoreRouter()
 function registerSimpleRouter() {
   // 路由
   router.get('/simple/get', function(req, res) {
@@ -160,6 +164,42 @@ function registerCancelRouter () {
       res.json(req.body)
     }, 1000)
   })
+}
+function registerMoreRouter () {
+  router.get('/more/get', function(req, res) {
+    res.json(req.cookies)
+  })
+
+  // router.post('/more/upload', function(req, res) {
+  //   console.log(req.body, req.files)
+  //   res.end('upload success!')
+  // })
+
+  // router.post('/more/post', function(req, res) {
+  //   const auth = req.headers.authorization
+  //   const [type, credentials] = auth.split(' ')
+  //   console.log(atob(credentials))
+  //   const [username, password] = atob(credentials).split(':')
+  //   if (type === 'Basic' && username === 'Yee' && password === '123456') {
+  //     res.json(req.body)
+  //   } else {
+  //     res.status(401)
+  //     res.end('UnAuthorization')
+  //   }
+  // })
+
+  // router.get('/more/304', function(req, res) {
+  //   res.status(304)
+  //   res.end()
+  // })
+
+  // router.get('/more/A', function(req, res) {
+  //   res.end('A')
+  // })
+
+  // router.get('/more/B', function(req, res) {
+  //   res.end('B')
+  // })
 }
 app.use(router)
 

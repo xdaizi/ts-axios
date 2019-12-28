@@ -3,11 +3,24 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index'
 import { parseHeaders } from '../helper/headers'
 import { createError } from '../helper/error'
+import { isURLSameOrigin } from '../helper/url'
+import cookie from '../helper/cookie'
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 返回promise对象
   return new Promise((resolve, reject) =>{
     // 利用解构赋值拿到参数,并且赋给默认值
-    const { data = null, url, method = 'get', headers, responseType, timeout,cancelToken } = config
+    const {
+        data = null,
+        url,
+        method = 'get',
+        headers,
+        responseType,
+        timeout,
+        cancelToken, 
+        withCredentials,
+        xsrfCookieName,
+        xsrfHeaderName
+    } = config
     
     // 创建xhr对象
     const request = new XMLHttpRequest()
@@ -20,7 +33,12 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     if(timeout) {
       request.timeout = timeout
     }
-  
+    
+    // 是否允许跨域请求时携带cookie
+    if(withCredentials) {
+      request.withCredentials = true
+    }
+
     // 初始化请求 请求方法，请求url，是否异步
     // 使用! 断定url必定存在
     request.open(method.toUpperCase(), url!, true)
@@ -71,6 +89,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         'ECONNABORTED',
         request
       ))
+    }
+
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName){
+      const xsrfValue = cookie.read(xsrfCookieName)
+      if (xsrfValue) {
+        headers[xsrfHeaderName!] = xsrfValue
+      }
     }
     // 处理请求头
     Object.keys(headers).forEach(name => {

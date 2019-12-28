@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime: 2019-12-02 00:16:39
+ * @LastEditTime : 2019-12-28 21:54:59
  */
 // 存放要使用到的接口
 
@@ -56,6 +56,15 @@ export interface AxiosRequestConfig {
 
   // canceltoken
   cancelToken?: CancelToken
+
+  // 跨域请求时是否允许携带cookie 
+  withCredentials?: boolean
+
+  // token在cookie中命名
+  xsrfCookieName?: string
+  
+  // token传给后端时在header的命名 
+  xsrfHeaderName?: string
 
   // 索引签名 属性名(字符串) 属性值any
   [propName:string]: any

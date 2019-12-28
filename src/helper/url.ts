@@ -2,7 +2,7 @@
  * @Descripttion: 针对url的帮助类方方
  * @Author: xiaodao
  * @Date: 2019-08-07 23:12:33
- * @LastEditTime: 2019-08-08 23:29:47
+ * @LastEditTime : 2019-12-28 21:58:21
  */
 
 import { isDate, isPlainObject } from './util'
@@ -80,4 +80,34 @@ export function buildUrl(url: string, params?: any): string {
   // 判断url上是否已有?及参数
   url += url.indexOf('?') !== -1 ? `&` : `?` + serializedParams
   return url
+}
+
+
+// 定义判断同源的接口
+interface URLOrigin {
+  protocol: string
+  host: string
+}
+
+
+// 判断是不是同源 --- 协议,域名相同
+export function isURLSameOrigin(requestURL: string): boolean {
+  const parsedOrigin = resolveURL(requestURL)
+  return (
+    parsedOrigin.protocol === currentOrigin.protocol && parsedOrigin.host === currentOrigin.host
+  )
+}
+
+const urlParsingNode = document.createElement('a')
+const currentOrigin = resolveURL(window.location.href)
+
+// 利用创建a标签来判断
+function resolveURL(url: string): URLOrigin {
+  urlParsingNode.setAttribute('href', url)
+  const { protocol, host } = urlParsingNode
+
+  return {
+    protocol,
+    host
+  }
 }
