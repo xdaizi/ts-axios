@@ -4,7 +4,9 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index'
 import { parseHeaders } from '../helper/headers'
 import { createError } from '../helper/error'
 import { isURLSameOrigin } from '../helper/url'
+import { isFormData } from '../helper/util'
 import cookie from '../helper/cookie'
+import { format } from 'path'
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 返回promise对象
   return new Promise((resolve, reject) =>{
@@ -19,107 +21,169 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         cancelToken, 
         withCredentials,
         xsrfCookieName,
-        xsrfHeaderName
+        xsrfHeaderName,
+        onDownloadProgress,
+        onUploadProgress
     } = config
     
     // 创建xhr对象
     const request = new XMLHttpRequest()
   
-    // 响应数据类型
-    if(responseType) {
-      request.responseType = responseType
-    }
-    // 如果超时配置存在
-    if(timeout) {
-      request.timeout = timeout
-    }
-    
-    // 是否允许跨域请求时携带cookie
-    if(withCredentials) {
-      request.withCredentials = true
-    }
-
     // 初始化请求 请求方法，请求url，是否异步
     // 使用! 断定url必定存在
     request.open(method.toUpperCase(), url!, true)
-  
-    // 监听响应变化
-    request.onreadystatechange = function handeLoad() {
+    
+    configureRequest()
 
-      if(request.readyState !== 4) { // 请求未回
-        return
-      }
+    addEvents()
 
-      // 如果是超时或者请求出错,status = 0
-      if(request.status === 0) {
-        return
-      }
-       
+    processHeaders()
 
-      // 获取头部 
-      const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-      // 根据类型获取请求数据
-      const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
-      const response: AxiosResponse = {
-        data: responseData,
-        status: request.status,
-        statusText: request.statusText,
-        headers: responseHeaders,
-        config,
-        request
-      }
-      handeRespons(response)
-    }
-
-    // 监听请求异常
-    request.onerror = function handeError() {
-      reject(createError(
-        'Network Error',
-        config,
-        null,
-        request
-      ))
-    }
-  
-    // 监听请求超时
-    request.ontimeout = function handeTimeout() {
-      reject(createError(
-        `Timeout of ${config.timeout} ms exceeded`,
-        config,
-        'ECONNABORTED',
-        request
-      ))
-    }
-
-    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName){
-      const xsrfValue = cookie.read(xsrfCookieName)
-      if (xsrfValue) {
-        headers[xsrfHeaderName!] = xsrfValue
-      }
-    }
-    // 处理请求头
-    Object.keys(headers).forEach(name => {
-      // 如果data不存在,不需要设置请求头
-      if (data === null && headers[name].toLowerCase === 'content-type') {
-        delete headers[name]
-      } else {
-        // 设置请求头信息
-        request.setRequestHeader(name, headers[name])
-      }
-    })
-
-    // 如果cancelToken有
-    if(cancelToken) {
-      cancelToken.promise.then(reason => {
-        // 取消请求
-        request.abort()
-        // 将信息暴露出去
-        reject(reason)
-      })
-    }
+    processCancel()
 
     // 发送请求
     request.send(data)
+
+
+    /**
+     * @name: configureRequest
+     * @desc: 处理相关配置
+     * @param 无 
+     * @return: 无
+     */
+    function configureRequest():void {
+      // 响应数据类型
+      if(responseType) {
+        request.responseType = responseType
+      }
+      // 如果超时配置存在
+      if(timeout) {
+        request.timeout = timeout
+      }
+      
+      // 是否允许跨域请求时携带cookie
+      if(withCredentials) {
+        request.withCredentials = true
+      }
+    }
+
+    
+    /**
+     * @name: addEvents
+     * @desc: 添加相关是事件
+     * @param 无 
+     * @return: 无
+     */
+    function addEvents():void {
+      // 监听响应变化
+      request.onreadystatechange = function handeLoad() {
+
+        if(request.readyState !== 4) { // 请求未回
+          return
+        }
+
+        // 如果是超时或者请求出错,status = 0
+        if(request.status === 0) {
+          return
+        }
+        
+
+        // 获取头部 
+        const responseHeaders = parseHeaders(request.getAllResponseHeaders())
+        // 根据类型获取请求数据
+        const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
+        const response: AxiosResponse = {
+          data: responseData,
+          status: request.status,
+          statusText: request.statusText,
+          headers: responseHeaders,
+          config,
+          request
+        }
+        handeRespons(response)
+      }
+
+      // 监听请求异常
+      request.onerror = function handeError() {
+        reject(createError(
+          'Network Error',
+          config,
+          null,
+          request
+        ))
+      }
+    
+      // 监听请求超时
+      request.ontimeout = function handeTimeout() {
+        reject(createError(
+          `Timeout of ${config.timeout} ms exceeded`,
+          config,
+          'ECONNABORTED',
+          request
+        ))
+      }
+
+      // 下载监控
+      if (onDownloadProgress) {
+        request.onprogress = onDownloadProgress
+      }
+      
+      // 上传监控
+      if (onUploadProgress) {
+        request.upload.onprogress = onUploadProgress
+      }
+      // 上传时需要去掉请求头的content-type,有浏览器默认配置
+    } 
+
+      /**
+     * @name: processHeaders
+     * @desc: 处理头部
+     * @param 无 
+     * @return: 无
+     */
+    function processHeaders(): void {
+      // 如果是FormData删除头部的Content-Type
+      if (isFormData(data)) {
+        delete headers['Content-Type']
+      }
+
+      if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName){
+        const xsrfValue = cookie.read(xsrfCookieName)
+        if (xsrfValue) {
+          headers[xsrfHeaderName!] = xsrfValue
+        }
+      }
+      // 处理请求头
+      Object.keys(headers).forEach(name => {
+        // 如果data不存在,不需要设置请求头
+        if (data === null && headers[name].toLowerCase === 'content-type') {
+          delete headers[name]
+        } else {
+          // 设置请求头信息
+          request.setRequestHeader(name, headers[name])
+        }
+      })
+    }
+
+    /**
+     * @name: processCancel
+     * @desc: 处理CancelToken
+     * @param 无
+     * @return: 无
+     */
+    function processCancel(): void {
+      // 如果cancelToken有
+      if(cancelToken) {
+        cancelToken.promise.then(reason => {
+          // 取消请求
+          request.abort()
+          // 将信息暴露出去
+          reject(reason)
+        })
+      }
+    }
+
+
 
     /**
      * @name: handeRespons

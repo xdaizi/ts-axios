@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime : 2019-12-28 21:54:59
+ * @LastEditTime : 2019-12-28 22:31:02
  */
 // 存放要使用到的接口
 
@@ -65,6 +65,11 @@ export interface AxiosRequestConfig {
   
   // token传给后端时在header的命名 
   xsrfHeaderName?: string
+
+  // 下载监控
+  onDownloadProgress?: (e: ProgressEvent) => void
+  // 上传监控
+  onUploadProgress?: (e: ProgressEvent) => void
 
   // 索引签名 属性名(字符串) 属性值any
   [propName:string]: any
