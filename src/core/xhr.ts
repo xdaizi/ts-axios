@@ -22,7 +22,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         xsrfCookieName,
         xsrfHeaderName,
         onDownloadProgress,
-        onUploadProgress
+        onUploadProgress,
+        auth
     } = config
     
     // 创建xhr对象
@@ -135,12 +136,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     } 
 
       /**
-     * @name: processHeaders
-     * @desc: 处理头部
-     * @param 无 
-     * @return: 无
-     */
+       * @name: processHeaders
+       * @desc: 处理头部
+       * @param 无 
+       * @return: 无
+       */
     function processHeaders(): void {
+      // 凭证
+      if (auth) {
+        headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password)
+      }
+
       // 如果是FormData删除头部的Content-Type
       if (isFormData(data)) {
         delete headers['Content-Type']

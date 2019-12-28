@@ -38,7 +38,7 @@ stratKeysFromVal2.forEach(strat => {
 })
 
 // 定义复杂合并字段数组
-const stratKeysDeepMerge = ['headers']
+const stratKeysDeepMerge = ['headers', 'auth']
 
 stratKeysDeepMerge.forEach(strat => {
     strats[strat] = deepMergeStrat

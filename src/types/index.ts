@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime : 2019-12-28 22:31:02
+ * @LastEditTime : 2019-12-28 23:22:57
  */
 // 存放要使用到的接口
 
@@ -70,6 +70,9 @@ export interface AxiosRequestConfig {
   onDownloadProgress?: (e: ProgressEvent) => void
   // 上传监控
   onUploadProgress?: (e: ProgressEvent) => void
+
+  // auth
+  auth?: AxiosBasicCredentials
 
   // 索引签名 属性名(字符串) 属性值any
   [propName:string]: any
@@ -239,4 +242,10 @@ export interface Cancel {
 // 定义cancel的接口类型
 export interface CancelStatic {
   new(message?: string): Cancel
+}
+
+// 定义auth的接口
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }
