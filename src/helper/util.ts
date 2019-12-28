@@ -2,7 +2,7 @@
  * @Descripttion: 辅助类函数
  * @Author: xiaodai
  * @Date: 2019-08-07 23:35:36
- * @LastEditTime : 2019-12-28 22:35:15
+ * @LastEditTime : 2019-12-29 00:02:10
  */
 
 // 类型判断 --- 可能多次用到,所以缓存下来
@@ -79,6 +79,16 @@ export function deepMerge(...objs:any[]):any {
  * @param {any} 
  * @return: boolean
  */
-export function isFormData(val: any): boolean {
+export function isFormData(val: any): val is FormData {
   return typeof val !== 'undefined' && val instanceof FormData
+}
+
+/**
+ * @name: isURLSearchParams
+ * @desc: 判断是否是isURLSearchParams
+ * @param {any} 
+ * @return: boolean
+ */
+export function isURLSearchParams(val: any): val is URLSearchParams {
+  return typeof val !== 'undefined' && val instanceof URLSearchParams
 }

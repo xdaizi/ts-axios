@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime : 2019-12-28 23:34:33
+ * @LastEditTime : 2019-12-28 23:50:53
  */
 // 存放要使用到的接口
 
@@ -76,6 +76,9 @@ export interface AxiosRequestConfig {
 
   // 自定义合法状态码
   validateStatus?: (status: number) => boolean
+
+  // 自定义参数序列化规则
+  paramsSerializer?: (params: any) => string
 
   // 索引签名 属性名(字符串) 属性值any
   [propName:string]: any

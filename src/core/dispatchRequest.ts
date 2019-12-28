@@ -38,9 +38,9 @@ function processConfig(config: AxiosRequestConfig): void {
  * @return: url: string api?key=value
  */
 function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params } = config
+  const { url, params,paramsSerializer  } = config
   // 通过!断定url一定存在
-  return buildUrl(url!, params)
+  return buildUrl(url!, params, paramsSerializer )
 }
 
 function transformResponseData(res: AxiosResponse): AxiosResponse{
