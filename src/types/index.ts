@@ -4,7 +4,7 @@ import { Interface } from "readline"
  * @Descripttion: 接口定义
  * @Author: sueRimn
  * @Date: 2019-07-09 23:24:53
- * @LastEditTime : 2019-12-29 00:14:18
+ * @LastEditTime : 2019-12-29 00:33:05
  */
 // 存放要使用到的接口
 
@@ -165,6 +165,7 @@ export interface AxiosType {
 
   // patch方法
   patch<T = any>(url: string, data?:any, config?: AxiosRequestConfig): AxiosPromise<T>
+  getUri(config?: AxiosRequestConfig): string
 }
 
 // 定义Axios实例类 除了axios.post 行直接axios()调用 --- 混合对象 不但自身是函数,其方法也是函数
@@ -182,8 +183,18 @@ export interface AxiosStatic extends AxiosInstance {
   Cancel: CancelStatic
   // 判断是否是cancel类
   isCancel: (value: any) => boolean
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+
+  Axios: AxiosClassStatic
 }
 
+// 定义类类型
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): AxiosType
+}
 // 定义拦截器的管理对象的忌口,提供外部使用,只有 use ,eject
 export interface AxiosInterceptorManager<T> {
   // use 方法 两个参数苏,第一个必选,第二个可选, 返回 ID ,方便取消

@@ -24,7 +24,7 @@ function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
  * @return: 无
  */
 function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformUrl(config)
+  config.url = transformURL(config)
   // 由于处理请求头部要判断data,所以请求头的处理要在data处理之前
   config.data = transform(config.data, config.headers, config.transformRequest)
   // 将headers下的提取出来
@@ -32,12 +32,12 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 /**
- * @name: transformUrl
+ * @name: transformURL
  * @desc: 转换url的参数, 将get请求参数亲姐到url上
  * @param {config: AxiosRequestConfig}
  * @return: url: string api?key=value
  */
-function transformUrl(config: AxiosRequestConfig): string {
+export function transformURL(config: AxiosRequestConfig): string {
   let { url, params, paramsSerializer, baseURL  } = config
   if (baseURL && !isAbsoluteURL(url!)) {
     url = combineURL(baseURL, url)
