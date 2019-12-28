@@ -2,7 +2,7 @@
  * @Descripttion: 针对url的帮助类方方
  * @Author: xiaodao
  * @Date: 2019-08-07 23:12:33
- * @LastEditTime : 2019-12-29 00:04:04
+ * @LastEditTime : 2019-12-29 00:18:14
  */
 
 import { isDate, isPlainObject, isURLSearchParams } from './util'
@@ -117,4 +117,17 @@ function resolveURL(url: string): URLOrigin {
     protocol,
     host
   }
+}
+
+
+// 判断是否绝对路径的url
+export function isAbsoluteURL(url: string): boolean {
+  // http://www.baidu.com
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+// 合并url
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  // 通过正则去掉/
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
 }

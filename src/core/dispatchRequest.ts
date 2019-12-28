@@ -1,6 +1,6 @@
 
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index'
-import { buildUrl } from '../helper/url'
+import { buildUrl, isAbsoluteURL, combineURL} from '../helper/url'
 import { flattenHeaders } from '../helper/headers'
 import transform from './transform'
 
@@ -38,7 +38,10 @@ function processConfig(config: AxiosRequestConfig): void {
  * @return: url: string api?key=value
  */
 function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params,paramsSerializer  } = config
+  let { url, params, paramsSerializer, baseURL  } = config
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url)
+  }
   // 通过!断定url一定存在
   return buildUrl(url!, params, paramsSerializer )
 }
