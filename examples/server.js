@@ -6,6 +6,8 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
 const router = express.Router()
 const cookieParser = require('cookie-parser')
+const multipart = require('connect-multiparty')
+const path = require('path')
 require('./server2.js')
 // 1.拿到express的实例
 const app = new express()
@@ -27,6 +29,11 @@ app.use(express.static(__dirname, {
   setHeaders (res) {
     res.cookie('XSRF-TOKEN-D', '1234abc')
   }
+}))
+
+// 上传
+app.use(multipart({
+  uploadDir: path.resolve(__dirname, 'upload-file')
 }))
 
 // 4.webpack-hot-middleware
@@ -177,10 +184,10 @@ function registerMoreRouter () {
     res.json(req.cookies)
   })
 
-  // router.post('/more/upload', function(req, res) {
-  //   console.log(req.body, req.files)
-  //   res.end('upload success!')
-  // })
+  router.post('/more/upload', function(req, res) {
+    console.log(req.body, req.files)
+    res.end('upload success!')
+  })
 
   // router.post('/more/post', function(req, res) {
   //   const auth = req.headers.authorization

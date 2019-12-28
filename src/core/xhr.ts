@@ -6,7 +6,6 @@ import { createError } from '../helper/error'
 import { isURLSameOrigin } from '../helper/url'
 import { isFormData } from '../helper/util'
 import cookie from '../helper/cookie'
-import { format } from 'path'
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 返回promise对象
   return new Promise((resolve, reject) =>{
@@ -32,7 +31,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     // 初始化请求 请求方法，请求url，是否异步
     // 使用! 断定url必定存在
     request.open(method.toUpperCase(), url!, true)
-    
+
     configureRequest()
 
     addEvents()
